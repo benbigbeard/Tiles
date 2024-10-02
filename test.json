@@ -1,0 +1,28 @@
+import Foundation
+
+// Model for the tile template using valid data types for JSON
+struct TileModel: Codable {
+    var tileLabel: String
+    var backgroundColor: String  // Store color as a hex string
+    var tileSize: CGFloat
+}
+
+// Function to export a tile template as a JSON file
+func exportTileTemplate() -> URL? {
+    let tile = TileModel(tileLabel: "Custom Tile", backgroundColor: "#FF5733", tileSize: 100)
+    
+    // Convert tile to JSON data
+    if let jsonData = try? JSONEncoder().encode(tile) {
+        // Save to a temporary directory
+        let tempDir = FileManager.default.temporaryDirectory
+        let fileURL = tempDir.appendingPathComponent("TileTemplate.json")
+        
+        do {
+            try jsonData.write(to: fileURL)
+            return fileURL  // Return the file URL for sharing or saving
+        } catch {
+            print("Error saving tile template: \(error)")
+        }
+    }
+    return nil
+}
